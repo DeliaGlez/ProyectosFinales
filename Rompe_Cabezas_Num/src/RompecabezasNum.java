@@ -1,6 +1,7 @@
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,21 +18,23 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 public class RompecabezasNum extends JFrame{
-	int i, j;
+	private int i, j;
 	private  JButton botones[];
 	private  JButton matrizBotones[][];	
+	private String arregloNum[]={"1","2","3","4","5","6","7","8","9","10","11","12","13","14","15"," "};
+	List<String> values= Arrays.asList("1","2","3","4","5","6","7","8","9","10","11","12","13","14"," ","15");
+	boolean gano;
 	public RompecabezasNum() {
+		gano=false;
 		this.setSize(640,480);
 		this.setLocationRelativeTo(null);
 		this.setTitle("Ventana");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLayout(null);
 		this.setResizable(true);
-		
-		List<String> values= Arrays.asList("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15"," ");
-		Collections.shuffle(values);
+
+		//Collections.shuffle(values);
 	
-		
 		botones = new JButton[16];
 		matrizBotones= new JButton[4][4];
 		
@@ -137,7 +140,9 @@ public class RompecabezasNum extends JFrame{
 		aux=0;
 		for (int i = 0; i < 4; i++) {
 			for(int j=0; j<4; j++) {
+				
 				matrizBotones[i][j].setText(values.get(aux));
+				matrizBotones[i][j].setFont(new Font("Century Gothic", Font.BOLD, 24));
 				aux++;
 			}
 			
@@ -180,16 +185,8 @@ public class RompecabezasNum extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				Collections.shuffle(values);
-				System.out.println(values);
-				int aux=0;
-				for (int i = 0; i < 4; i++) {
-					for(int j=0; j<4; j++) {
-						matrizBotones[i][j].setText(values.get(aux));
-						aux++;
-					}
-					
-				}
+				reiniciar();
+				
 			}
 			
 		});
@@ -235,7 +232,6 @@ public class RompecabezasNum extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-
 				
 				if(boton.getText() != " ") {
 					// boton 0,0
@@ -301,11 +297,42 @@ public class RompecabezasNum extends JFrame{
 					}
 					
 				};
+				
+				gano=validarGane(botones);
+				if(gano==true) {
+					/*
+					int salida = JOptionPane.showConfirmDialog(null, "Haz ganado" , "FELICIDADES!", 2, 1, null);
+           
+                    if(salida==0){
+                    	reiniciar();
+
+                    }*/
+					Object[] opciones = {"Volver a jugar"};
+					int seleccion = JOptionPane.showOptionDialog(null, "Haz ganado", "FELICIDADES!", JOptionPane.YES_OPTION, JOptionPane.QUESTION_MESSAGE, null, opciones,opciones[0]);
+					
+			        if (seleccion == JOptionPane.YES_OPTION) {
+			        	reiniciar();
+			        } 
+				}
 			}
 			
 		});
 	}
 	
+	public void reiniciar(){
+		gano=false;
+		Collections.shuffle(values);
+		System.out.println(values);
+		int aux=0;
+		for (int i = 0; i < 4; i++) {
+			for(int j=0; j<4; j++) {
+				matrizBotones[i][j].setText(values.get(aux));
+				aux++;
+			}
+			
+		}
+		
+	}
 	public void verificarAbajo(int fila, int columna) {
 		if(matrizBotones[fila+1][columna].getText()==" ") { //abajo
 			matrizBotones[fila+1][columna].setText(matrizBotones[fila][columna].getText());
@@ -334,5 +361,17 @@ public class RompecabezasNum extends JFrame{
 		}
 	}
 	
+	public boolean validarGane(JButton botones[]) {
+		boolean gano;
+		String[] textoBotones = new String[botones.length];
+		
+		for(int i=0;i<botones.length;i++) {
+			textoBotones[i] = botones[i].getText();
+		}
+		
+		gano=Arrays.equals(arregloNum, textoBotones);
+		
+		return gano;
+	}
 	
 }
