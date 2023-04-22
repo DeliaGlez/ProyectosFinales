@@ -1,6 +1,7 @@
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -18,23 +19,25 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 public class RompecabezasNum extends JFrame{
+	
 	private int i, j;
 	private  JButton botones[];
 	private  JButton matrizBotones[][];	
 	private String arregloNum[]={"1","2","3","4","5","6","7","8","9","10","11","12","13","14","15"," "};
-	List<String> values= Arrays.asList("1","2","3","4","5","6","7","8","9","10","11","12","13","14"," ","15");
+	List<String> values= Arrays.asList("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15"," ");
 	boolean gano;
+	Color gris=Color.decode("#5a5f69");
+	
 	public RompecabezasNum() {
 		gano=false;
 		this.setSize(640,480);
 		this.setLocationRelativeTo(null);
-		this.setTitle("Ventana");
+		this.setTitle("Rompecabezas numerico");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLayout(null);
 		this.setResizable(true);
 
-		//Collections.shuffle(values);
-	
+		
 		botones = new JButton[16];
 		matrizBotones= new JButton[4][4];
 		
@@ -46,13 +49,12 @@ public class RompecabezasNum extends JFrame{
 		JPanel marcoDerecha=new JPanel();
 		JPanel marcoIzquierda=new JPanel();
 
-		this.setBackground(Color.decode("#0665c0"));
+		this.setBackground(Color.decode("#042745"));
 		this.setLayout(new BorderLayout());
-		
 		
 		panelBotones.setLayout(new GridLayout(4,4));
 		panelBotones.setOpaque(true);
-		panelBotones.setBackground(Color.decode("#c99257"));
+		panelBotones.setBackground(Color.decode("#042745"));
 		JButton btn1= new JButton();
 		JButton btn2= new JButton();
 		JButton btn3= new JButton();
@@ -69,10 +71,7 @@ public class RompecabezasNum extends JFrame{
 		JButton btn14= new JButton();
 		JButton btn15= new JButton();
 		JButton btn16= new JButton();
-		
-		
-		
-		
+	
 		for (int i = 0; i < 16; i++) {
 			switch (i) {
 			case 0:
@@ -122,9 +121,7 @@ public class RompecabezasNum extends JFrame{
 				break;
 			case 15:
 				botones[i]=btn16;
-				break;
-				
-				
+				break;	
 			}
 		}
 		int aux=0;
@@ -133,25 +130,23 @@ public class RompecabezasNum extends JFrame{
 				matrizBotones[i][j]=botones[aux];
 				agregarAccion(matrizBotones[i][j],i,j);
 				aux++;
-				System.out.println(aux);
 			}
 			
 		}
+
+		Collections.shuffle(values);
 		aux=0;
 		for (int i = 0; i < 4; i++) {
 			for(int j=0; j<4; j++) {
-				
+				matrizBotones[i][j].setFocusPainted(false);
 				matrizBotones[i][j].setText(values.get(aux));
-				matrizBotones[i][j].setFont(new Font("Century Gothic", Font.BOLD, 24));
+				matrizBotones[i][j].setFont(new Font("Cooper Black", Font.BOLD, 35));
+				matrizBotones[i][j].setForeground(Color.white);
 				aux++;
 			}
 			
 		}
-		/*for (int i = 0; i < 16; i++) {
-			botones[i].setText(values.get(i));
-		}*/
-		
-		
+		actualizarColores();
 		
 		panelBotones.add(btn1);
 		panelBotones.add(btn2);
@@ -170,46 +165,49 @@ public class RompecabezasNum extends JFrame{
 		panelBotones.add(btn15);
 		panelBotones.add(btn16);
 		
+		marcoArriba.setLayout(new FlowLayout(FlowLayout.CENTER,20,10));
+		marcoArriba.setBackground(Color.decode("#042745"));
 		
+		marcoAbajo.setLayout(new FlowLayout(FlowLayout.CENTER,20,10));
+		marcoAbajo.setBackground(Color.decode("#042745"));
 		
-		marcoArriba.setLayout(new GridLayout(0,1,0,0));
-		marcoArriba.setBackground(Color.decode("#c99257"));
-		//marcoArriba.setBackground(getForeground());
-		//marcoArriba.setLayout(new GridLayout(0,1,0,0));
-		marcoAbajo.setLayout(new GridLayout(0,1,0,0));
-		marcoAbajo.setBackground(Color.decode("#c99257"));
+		JButton btnReinicio= new JButton("Reiniciar");
+		btnReinicio.setFont(new Font("Segoe UI Black",Font.BOLD,20));
+		btnReinicio.setBackground(Color.decode("#9836bf"));
+		btnReinicio.setForeground(Color.white);
+		btnReinicio.setFocusPainted(false);
 		
-		JButton reinicio= new JButton("Reiniciar");
-		reinicio.addActionListener(new ActionListener() {
+		btnReinicio.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				reiniciar();
+				actualizarColores();
 				
 			}
 			
 		});
 		
 		marcoDerecha.setLayout(new GridLayout(0,1,0,0));
-		marcoDerecha.setBackground(Color.decode("#c99257"));
+		marcoDerecha.setBackground(Color.decode("#042745"));
 		marcoIzquierda.setLayout(new GridLayout(0,1,0,0));
-		marcoIzquierda.setBackground(Color.decode("#c99257"));
+		marcoIzquierda.setBackground(Color.decode("#042745"));
 		
-		JLabel j1=new JLabel("hola");
-		j1.setForeground(Color.decode("#c99257"));
+		JLabel j1=new JLabel("Rompecabezas numerico");
+		j1.setForeground(Color.decode("#faef75"));
+		j1.setFont(new Font("Cooper Black", Font.BOLD, 40));
 		JLabel j2=new JLabel("hola");
-		j2.setForeground(Color.decode("#c99257"));
+		j2.setForeground(Color.decode("#042745"));
 		JLabel j3=new JLabel("hola");
-		j3.setForeground(Color.decode("#c99257"));
+		j3.setForeground(Color.decode("#042745"));
 		JLabel j4=new JLabel("hola");
-		j4.setForeground(Color.decode("#c99257"));
+		j4.setForeground(Color.decode("#042745"));
 		
 		marcoArriba.add(j1);
-		marcoAbajo.add(reinicio);
+		marcoAbajo.add(btnReinicio);
 		marcoDerecha.add(j3);
 		marcoIzquierda.add(j4);
-		
 		
 		
 		this.add(panelBotones,BorderLayout.CENTER);
@@ -217,9 +215,7 @@ public class RompecabezasNum extends JFrame{
 		this.add(marcoAbajo,BorderLayout.SOUTH);
 		this.add(marcoDerecha,BorderLayout.EAST);
 		this.add(marcoIzquierda,BorderLayout.WEST);
-		
-		
-		//this.add(principal);
+	
 		this.repaint();
 		this.revalidate();
 		this.setVisible(true);
@@ -232,7 +228,7 @@ public class RompecabezasNum extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				
+				//System.out.println(e);
 				if(boton.getText() != " ") {
 					// boton 0,0
 					if(fila==0 && columna==0) {
@@ -300,18 +296,12 @@ public class RompecabezasNum extends JFrame{
 				
 				gano=validarGane(botones);
 				if(gano==true) {
-					/*
-					int salida = JOptionPane.showConfirmDialog(null, "Haz ganado" , "FELICIDADES!", 2, 1, null);
-           
-                    if(salida==0){
-                    	reiniciar();
-
-                    }*/
 					Object[] opciones = {"Volver a jugar"};
-					int seleccion = JOptionPane.showOptionDialog(null, "Haz ganado", "FELICIDADES!", JOptionPane.YES_OPTION, JOptionPane.QUESTION_MESSAGE, null, opciones,opciones[0]);
+					int seleccion = JOptionPane.showOptionDialog(null, "Haz ganado", "FELICIDADES!", JOptionPane.YES_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opciones,opciones[0]);
 					
 			        if (seleccion == JOptionPane.YES_OPTION) {
 			        	reiniciar();
+			        	actualizarColores();
 			        } 
 				}
 			}
@@ -322,7 +312,7 @@ public class RompecabezasNum extends JFrame{
 	public void reiniciar(){
 		gano=false;
 		Collections.shuffle(values);
-		System.out.println(values);
+		
 		int aux=0;
 		for (int i = 0; i < 4; i++) {
 			for(int j=0; j<4; j++) {
@@ -336,13 +326,18 @@ public class RompecabezasNum extends JFrame{
 	public void verificarAbajo(int fila, int columna) {
 		if(matrizBotones[fila+1][columna].getText()==" ") { //abajo
 			matrizBotones[fila+1][columna].setText(matrizBotones[fila][columna].getText());
+			matrizBotones[fila+1][columna].setBackground(matrizBotones[fila][columna].getBackground());
+			matrizBotones[fila][columna].setBackground(gris);
 			matrizBotones[fila][columna].setText(" ");
+			//color=matrizBotones[fila][columna].getBackground();
 		}
 	}
 	
 	public void verificarDerecha(int fila, int columna) {
 		if(matrizBotones[fila][columna+1].getText()==" ") { //derecha
 			matrizBotones[fila][columna+1].setText(matrizBotones[fila][columna].getText());
+			matrizBotones[fila][columna+1].setBackground(matrizBotones[fila][columna].getBackground());
+			matrizBotones[fila][columna].setBackground(gris);
 			matrizBotones[fila][columna].setText(" ");
 		}
 	}
@@ -350,6 +345,8 @@ public class RompecabezasNum extends JFrame{
 	public void verificarIzquierda(int fila, int columna) {
 		if(matrizBotones[fila][columna-1].getText()==" ") { //izquierda
 			matrizBotones[fila][columna-1].setText(matrizBotones[fila][columna].getText());
+			matrizBotones[fila][columna-1].setBackground(matrizBotones[fila][columna].getBackground());
+			matrizBotones[fila][columna].setBackground(gris);
 			matrizBotones[fila][columna].setText(" ");
 		}
 	}
@@ -357,6 +354,8 @@ public class RompecabezasNum extends JFrame{
 	public void verificarArriba(int fila, int columna) {
 		if(matrizBotones[fila-1][columna].getText()==" ") { //arriba
 			matrizBotones[fila-1][columna].setText(matrizBotones[fila][columna].getText());
+			matrizBotones[fila-1][columna].setBackground(matrizBotones[fila][columna].getBackground());
+			matrizBotones[fila][columna].setBackground(gris);
 			matrizBotones[fila][columna].setText(" ");
 		}
 	}
@@ -372,6 +371,27 @@ public class RompecabezasNum extends JFrame{
 		gano=Arrays.equals(arregloNum, textoBotones);
 		
 		return gano;
+	}
+	public void actualizarColores() {
+		for (int k = 0; k < botones.length; k++) {
+				if(botones[k].getText()=="1"||botones[k].getText()=="2" ||botones[k].getText()=="3"||botones[k].getText()=="4") {
+					botones[k].setBackground(Color.decode("#e50064"));
+					
+				}
+				if(botones[k].getText()=="5"||botones[k].getText()=="6" ||botones[k].getText()=="7"||botones[k].getText()=="8") {
+					botones[k].setBackground(Color.decode("#4285f4"));
+				}
+				if(botones[k].getText()=="9"||botones[k].getText()=="10" ||botones[k].getText()=="11"||botones[k].getText()=="12") {
+					botones[k].setBackground(Color.decode("#6e2585"));
+				}
+				if(botones[k].getText()=="13"||botones[k].getText()=="14" ||botones[k].getText()=="15") {
+					botones[k].setBackground(Color.decode("#ffa000"));
+				}
+				if(botones[k].getText()==" ") {
+					botones[k].setBackground(Color.decode("#5a5f69"));
+				}
+			
+		}
 	}
 	
 }
