@@ -12,18 +12,18 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class Ventana extends JFrame {
-	//private JFrame frame;
 	public int x,y;
 	public int ultima_Presionada;
-	//public boolean colision;
+	Rect[] rectangulos;
+	Rect player ;
 	public Ventana() {
+		rectangulos= new Rect[2];
 		this.setSize(640,480);
 		this.setLocationRelativeTo(null);
 		this.setTitle("Ventana");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLayout(new BorderLayout());
 		this.setResizable(true);
-		
 		JPanel panel= new JPanel();
 		panel.setSize(640,480);
 		panel.setLocation(0,0);
@@ -48,6 +48,9 @@ public class Ventana extends JFrame {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				// TODO Auto-generated method stub
+				int xAnterior = x;
+		        int yAnterior = y;
+		        
 				int codigo= e.getKeyCode();
 				System.out.println("Tecla:");
 				System.out.println(e.getKeyChar());
@@ -72,12 +75,19 @@ public class Ventana extends JFrame {
 					}
 				break;
 				case 68:
-					if(x<480) {
+					if(x<480 ) {
 						x+=10;
 					}
 				}
-				juego.repaint();
 				
+				for (int i=0;i<rectangulos.length;i++) {
+					if (rectangulos[i].colision(new Rect(x, y, 20, 20, Color.blue))) {
+			            // hay una colisión, restaurar las coordenadas del cuadrado
+			            x = xAnterior;
+			            y = yAnterior;
+			        }
+				}
+				juego.repaint();	
 			}
 			
 			@Override
@@ -107,21 +117,22 @@ public class Ventana extends JFrame {
 			g.setColor(Color.gray);
 			g.fillRect(0,0,600,400);
 			
-			Rect r = new Rect(x,y,20,20,Color.blue);
+			player= new Rect(x,y,20,20,Color.blue);
 			g.setColor(Color.blue);
-			g.fillRect(r.x,r.y,r.w,r.h);
+			g.fillRect(player.x,player.y,player.w,player.h);
 			
 			Rect p=new Rect(300,60,40,200,Color.red);
 			g.setColor(p.c);
 			g.fillRect(p.x, p.y, p.w, p.h);
+			rectangulos[0]=p;
 			
-			System.out.println(r.colision(p));
+			Rect p2=new Rect(200,80,40,200,Color.green);
+			g.setColor(p2.c);
+			g.fillRect(p2.x, p2.y, p2.w, p2.h);
+			rectangulos[1]=p2;
 			
-			
+			System.out.println(player.colision(p));	
 		}
-		
-		 
-		
 	}
 	
 	public class Rect {
@@ -152,4 +163,5 @@ public class Ventana extends JFrame {
 			
 		}
 	}
+	
 }
